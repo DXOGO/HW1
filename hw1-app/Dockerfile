@@ -1,10 +1,8 @@
+FROM openjdk:11
+COPY ./target/hw1-0.0.1-SNAPSHOT.jar hw1.jar
 
-  FROM maven:3.8.1-adoptopenjdk-11
-
-WORKDIR /app
-
-COPY . /app/
+EXPOSE 8000
 
 RUN mvn -DskipTests clean package
 
-ENTRYPOINT ["java","-jar","/app/target/hw1-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "hw1.jar"]
