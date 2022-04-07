@@ -1,54 +1,36 @@
-import { Component, ViewContainerRef } from '@angular/core';
-import * as $ from 'jquery';
+import { AfterContentInit, Component, ViewChild } from '@angular/core';
+import { MainComponent } from './main/main.component';
+import { FooterComponent } from './footer/footer.component';
+import { SplashscreenComponent } from './splashscreen/splashscreen.component';
 
-import { GlobalState } from './global.state';
-import { BaImageLoaderService, BaThemePreloader, BaThemeSpinner } from './theme/services';
-import { BaThemeConfig } from './theme/theme.config';
-import { layoutPaths } from './theme/theme.constants';
 
-/*
- * App Component
- * Top Level Component
- */
 @Component({
-  selector: 'app',
+  selector: 'app-root',
+  templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  template: `
-    <main [class.menu-collapsed]="isMenuCollapsed" baThemeRun>
-      <div class="additional-bg"></div>
-      <router-outlet></router-outlet>
-    </main>
-  `
+  host: {class: 'app'}
 })
-export class App {
+export class AppComponent {
 
-  isMenuCollapsed: boolean = false;
+  @ViewChild('main', { static: true }) public main: MainComponent;
+  @ViewChild(FooterComponent, { read: FooterComponent}) public footer: FooterComponent;
+  @ViewChild('splash-screen', {static: true}) public splash: SplashscreenComponent;
 
-  constructor(private _state: GlobalState,
-              private _imageLoader: BaImageLoaderService,
-              private _spinner: BaThemeSpinner,
-              private viewContainerRef: ViewContainerRef,
-              private themeConfig: BaThemeConfig) {
+  public darkTheme = true;
+  public ssVisability = '';
 
-    themeConfig.config();
-
-    this._loadImages();
-
-    this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
-      this.isMenuCollapsed = isCollapsed;
-    });
+  public toggleTheme() {
+    this.darkTheme = !this.darkTheme;
+    this.main.map.darkTheme = this.darkTheme;
+    this.main.map.changeMap();
+    this.main.map.changeMapSeriesBrushScale();
   }
 
-  public ngAfterViewInit(): void {
-    // hide spinner once all loaders are completed
-    BaThemePreloader.load().then((values) => {
-      this._spinner.hide();
-    });
+  public onUpdateTimeRetrieved(lastCommit: number) {
+    this.footer.lastUpdate = new Date(lastCommit);
   }
 
-  private _loadImages(): void {
-    // register some loaders
-    BaThemePreloader.registerLoader(this._imageLoader.load('assets/img/sky-bg.jpg'));
+  public onDataReceived($event) {
+    this.ssVisability = $event;
   }
-
 }

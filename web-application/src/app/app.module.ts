@@ -1,61 +1,85 @@
-import { NgModule, ApplicationRef } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateService } from '@ngx-translate/core';
-/*
- * Platform and Environment providers/directives/pipes
- */
-import { routing } from './app.routing';
+import { BrowserModule, HammerModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MainComponent } from './main/main.component';
+import {
+    IgxButtonModule, IgxCardModule, IgxExpansionPanelModule,
+    IgxIconModule, IgxBottomNavModule, IgxAvatarModule, IgxRippleModule, IgxButtonGroupModule, IgxTabsModule,
+    IgxListModule,
+    IgxNavbarModule,
+    IgxDividerModule,
+    IgxTooltipModule, IgxSwitchModule, IgxProgressBarModule
+} from 'igniteui-angular';
+import { IgxDataChartCoreModule, IgxDataChartCategoryModule,
+    IgxDataChartAnnotationModule, IgxCalloutLayerModule, IgxCrosshairLayerModule,
+    IgxFinalValueLayerModule, IgxLegendModule, IgxTimeXAxisModule,
+    IgxNumericXAxisModule, IgxCategoryXAxisModule, IgxFinancialChartModule,
+    IgxScatterLineSeriesModule, IgxLineSeriesModule, IgxCategoryToolTipLayerModule,
+    IgxDataChartInteractivityModule  } from 'igniteui-angular-charts';
+import { IgxGeographicMapCoreModule, IgxGeographicMapModule } from 'igniteui-angular-maps';
+import { MapCasesComponent } from './map-cases/map-cases.component';
+import { ListCasesComponent } from './list-cases/list-cases.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { TimelineChartComponent } from './timeline-chart/timeline-chart.component';
+import { SplashscreenComponent } from './splashscreen/splashscreen.component';
 
-// App is our top level component
-import { App } from './app.component';
-import { AppState, InternalStateType } from './app.service';
-import { GlobalState } from './global.state';
-import { NgaModule } from './theme/nga.module';
-import { PagesModule } from './pages/pages.module';
-
-
-// Application wide providers
-const APP_PROVIDERS = [
-  AppState,
-  GlobalState
-];
-
-export type StoreType = {
-  state: InternalStateType,
-  restoreInputValues: () => void,
-  disposeOldHosts: () => void
-};
-
-/**
- * `AppModule` is the main entry point into Angular2's bootstraping process
- */
 @NgModule({
-  bootstrap: [App],
   declarations: [
-    App
+    AppComponent,
+    MainComponent,
+    MapCasesComponent,
+    ListCasesComponent,
+    HeaderComponent,
+    FooterComponent,
+    TimelineChartComponent,
+    SplashscreenComponent
   ],
-  imports: [ // import Angular's modules
-    BrowserModule,
-    HttpModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgaModule.forRoot(),
-    NgbModule.forRoot(),
-    PagesModule,
-    routing
-  ],
-  providers: [ // expose our Services and Providers into Angular's dependency injection
-    APP_PROVIDERS
-  ]
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        HammerModule,
+        IgxGeographicMapCoreModule,
+        IgxButtonGroupModule,
+        IgxTabsModule,
+        IgxGeographicMapModule,
+        IgxRippleModule,
+        IgxListModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        IgxButtonModule,
+        IgxCardModule,
+        IgxExpansionPanelModule,
+        IgxIconModule,
+        IgxBottomNavModule,
+        IgxAvatarModule,
+        IgxRippleModule,
+        IgxDataChartCoreModule,
+        IgxDataChartCategoryModule,
+        IgxDataChartAnnotationModule,
+        IgxCalloutLayerModule,
+        IgxCrosshairLayerModule,
+        IgxFinalValueLayerModule,
+        IgxLegendModule,
+        IgxTimeXAxisModule,
+        IgxNumericXAxisModule,
+        IgxCategoryXAxisModule,
+        IgxFinancialChartModule,
+        IgxNavbarModule,
+        IgxCardModule,
+        IgxDividerModule,
+        IgxScatterLineSeriesModule,
+        IgxLineSeriesModule,
+        IgxTooltipModule,
+        IgxSwitchModule,
+        IgxProgressBarModule,
+        IgxCategoryToolTipLayerModule,
+        IgxDataChartInteractivityModule
+    ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
-
 export class AppModule {
-
-  constructor(public appState: AppState) {
-  }
 }
