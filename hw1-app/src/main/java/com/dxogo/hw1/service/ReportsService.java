@@ -30,11 +30,11 @@ public class ReportsService {
     //     return null;    
     // }
 
-    public Reports getReportsByRegion(String region) throws ResourceNotFoundException {
-        return null;
+    public Reports getReportsByRegion(String region_province) throws ResourceNotFoundException {
+        return repository.findByRegion(region_province);
     }
 
     public Reports getReportsByIso(String iso) throws ResourceNotFoundException {
-        return null;    
+        return repository.findByCountry(iso);
     }
 }

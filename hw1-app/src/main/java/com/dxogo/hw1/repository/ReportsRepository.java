@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReportsRepository extends JpaRepository<Reports,Integer>{
-    Reports findByRegion(String region_province);
+    Reports findByRegion(String region);
     Reports findByCountry(String iso); 
-
 }

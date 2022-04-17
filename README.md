@@ -9,3 +9,25 @@ Includes:
 - Implement a cache to reduce the number of external accesses.
 - Your own *REST API* to expose COVID monitoring data to be invoked by external clients
 - Logging strategy to produce useful evidence of the actions/events that happened while using your software, for later inspection/debugging.
+
+
+
+#### **How to run:**
+
+
+
+##### To create *jar* file
+
+Inside *hw1-app* *folder*
+
+```bash
+mvn clean package -DskipTests
+```
+
+Then,
+
+```
+[DOCKER] 		./run.sh (localhost:8080)
+[OPTIONAL] 		./mvnw spring-boot:run (in the hw1-app folder)
+```
+
