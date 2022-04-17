@@ -25,11 +25,11 @@ headers = {
 #                       "&q=" + q[0] + "%20" + q[1] + 
 #                       "&date=" date, headers=headers)
 
-answer = conn.request("GET", "/reports?iso=PRT&date=2020-04-16", headers=headers)
+answer = conn.request("GET", "/provinces?iso=CHN", headers=headers)
 res = conn.getresponse()
    
 if res is not None:
     data = res.read()
     data = json.loads(data)
     print(data)
-    print(data['data'][0]['confirmed'])
+    #print(data['data'][0]['confirmed'])
