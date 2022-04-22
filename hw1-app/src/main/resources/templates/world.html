@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <base href="./">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>World Report</title>
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff"> 
+    <!-- Vendors styles-->
+    <link rel="stylesheet" type="text/css" href="css/vendors/simplebar.css">
+    <!-- Main styles for this application-->
+    <link type="text/css" href="css/index.css" rel="stylesheet">
+   
+    <!-- Global site tag (gtag.js) - Google Analytics-->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+
+    <script type="text/javascript" src="js/countries.js"></script>
+
+
+    </head>
+  <body>
+    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+      <header class="header header-sticky mb-4">
+        <div class="container-fluid">
+          <div class="header-nav d-none d-md-flex">
+            <li class="nav-item"><a class="nav-link" href="http://localhost:8080/cache">Cache</a></li>
+          </div>
+        </div>
+      </header>
+      <div class="container-lg">
+        <h1 style="text-align:center; margin-bottom: 50px;">Covid-19 <b>World</b> Information</h1>
+        <div style="text-align:left; margin-bottom: 50px; margin-top: 20px; " >
+          <h3 style="text-align:center;">Search by Country</h3>
+          <select class="form-control" id="countries-dropdown" onchange="document.location = this.value", name="countries" style="font-size: 15px; width: 50%; display: block; margin: 0 auto;">
+          </select><!-- /.select-->
+        </div>
+        <div class="row" th:each="data : ${world}">
+          <h4 style="text-align:center; margin-bottom: 20px;">Today</h4>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card mb-4 text-white bg-primary">
+              <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="fs-4 fw-semibold"> +<a th:text="${data.new_cases}"> </a>
+                    <span class="fs-6 fw-normal"><i> (Total: <a th:text="${data.total_cases}"></a>)</i></span>
+                  </div>
+                  <div style="margin-top: 5px; margin-bottom: 10px;"><b>New cases</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card mb-4 text-white bg-warning">
+              <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="fs-4 fw-semibold"> +<a th:text="${data.new_deaths}"> </a>
+                    <span class="fs-6 fw-normal"><i> (Total: <a th:text="${data.total_deaths}"></a>)</i></span>
+                  </div>
+                  <div style="margin-top: 5px; margin-bottom: 10px;"><b>New deaths</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card mb-4 text-white bg-success">
+              <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="fs-4 fw-semibold"> +<a th:text="${data.new_recovered}"> </a>
+                    <span class="fs-6 fw-normal"><i> (Total: <a th:text="${data.total_recovered}"></a>)</i></span>
+                  </div>
+                  <div style="margin-top: 5px; margin-bottom: 10px;"><b>New recovered</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card mb-4 text-white bg-danger">
+              <div class="card-body pb-0 d-flex justify-content-between align-items-start">
+                <div>
+                  <div class="fs-4 fw-semibold"> <a th:text="${data.active_cases}"> </a>
+                    <span class="fs-6 fw-normal"><i> (Critical: <a th:text="${data.critical}"></a>)</i></span>
+                  </div>
+                  <div style="margin-top: 5px; margin-bottom: 10px;"><b>Active cases</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content-wrapper">
+        <div class="table-responsive">
+          <div class="table-wrapper">
+            <section class="content-header">
+              <div class="container-fluid">
+                <div class="row mb-2">
+                  <div class="col-sm-6" >
+                    <h3 style="border-top: 50px;">Top 10 most affected countries</h3>
+                  </div>
+                </div>
+              </div><!-- /.container-fluid -->
+            </section>
+          </div>
+          <section class="content" style="width:95%; margin-left: 2rem;">
+            <div class="card">
+              <div class="card-body">
+              <table class="table table-striped table-hover">
+                <thead>
+                  <tr>		
+                    <th style="text-align:center" scope="col">Rank</th>
+                    <th style="text-align:center" scope="col">Country</th>
+                    <th style="text-align:center" scope="col">Continent</th>
+                    <th style="text-align:center" scope="col">Total Cases</th>
+                    <th style="text-align:center" scope="col">Total Deaths</th>
+                    <th style="text-align:center" scope="col">Total Recovered</th>
+                    <th style="text-align:center" scope="col">Total Tests</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="data : ${top10}">
+                    <td style="text-align:center">[[${data.rank}]] </td>
+                    <td style="text-align:center">[[${data.name}]] </td>
+                    <td style="text-align:center">[[${data.continent}]]</td>
+                    <td style="text-align:center">[[${data.total_cases}]]</td>
+                    <td style="text-align:center">[[${data.total_deaths}]]</td>
+                    <td style="text-align:center">[[${data.total_recovered}]]</td>
+                    <td style="text-align:center">[[${data.total_tests}]]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>    
+          </section>
+        </div>        
+      </div>
+    </div>
+  </body>
+</html>

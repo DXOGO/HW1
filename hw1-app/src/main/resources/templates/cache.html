@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <base href="./">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Cache</title>
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff"> 
+    <!-- Vendors styles-->
+    <link rel="stylesheet" type="text/css" href="css/vendors/simplebar.css">
+    <!-- Main styles for this application-->
+    <link type="text/css" href="css/index.css" rel="stylesheet">
+   
+    <!-- Global site tag (gtag.js) - Google Analytics-->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+
+    <style>
+        *{padding: 0; margin: 0; box-sizing: border-box; overflow:hidden}
+    </style>
+
+  </head>
+  <body>
+    <header class="header header-sticky mb-4">
+        <div class="container-fluid">
+            <div class="header-nav d-none d-md-flex">
+                <li class="nav-item"><a class="nav-link" href="http://localhost:8080/world">World</a></li>
+            </div>
+        </div>
+    </header>
+    <div class="jumbotron d-flex align-items-center min-vh-10">
+        <div class="container-lg" style="width:50%"    >
+            <h1 style="text-align:center; margin-bottom: 50px;"><b>Cache</b></h1>
+            <div class="row" th:each="data : ${cache}">
+                <div class="col-sm-4 col-lg-4">
+                    <div class="card mb-4 text-white bg-primary" style="width: 17rem; height: 7rem;">
+                        <div class="card-body">
+                            <div>
+                                <div class="col d-flex justify-content-center fs-4 fw-semibold"><a th:text="${data.requests}"></a></div>
+                                <div style="text-align:center;"><b>Requests</b></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="card mb-4 text-white bg-success" style="width: 17rem; height: 7rem;">
+                        <div class="card-body">
+                            <div>
+                                <div class="col d-flex justify-content-center fs-4 fw-semibold"><a th:text="${data.hits}"></a></div>
+                                <div style="text-align:center;"><b>Hits</b></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-lg-4">
+                    <div class="card mb-4 text-white bg-danger" style="width: 17rem; height: 7rem;">
+                        <div class="card-body">
+                            <div>
+                                <div class="col d-flex justify-content-center fs-4 fw-semibold"><a th:text="${data.misses}"></a></div>
+                                <div style="text-align:center;"><b>Misses</b></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
