@@ -6,8 +6,6 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Data;
 
 @Data
@@ -16,18 +14,18 @@ public class LastSixMonths {
 
     @JsonProperty("symbol") private String symbol;
     @JsonProperty("Country") private String country;
-    @JsonProperty("date") @DateTimeFormat(pattern = "dd-MM-yyyy") private Date date;
-    @JsonProperty("total_cases") private Long total_cases;
-    @JsonProperty("new_cases") private Long new_cases;
-    @JsonProperty("total_deaths") private Long total_deaths;
-    @JsonProperty("new_deaths") private Long new_deaths;
-    @JsonProperty("total_tests") private Long total_tests;
-    @JsonProperty("new_tests") private Long new_tests;
+    @JsonProperty("date") private Date date;
+    @JsonProperty("total_cases") private int total_cases;
+    @JsonProperty("new_cases") private int new_cases;
+    @JsonProperty("total_deaths") private int total_deaths;
+    @JsonProperty("new_deaths") private int new_deaths;
+    @JsonProperty("total_tests") private int total_tests;
+    @JsonProperty("new_tests") private int new_tests;
 
 
     public LastSixMonths() {}
 
-    public LastSixMonths(String symbol, String country, Date date, Long total_cases, Long new_cases, Long total_deaths, Long new_deaths, Long total_tests, Long new_tests) {
+    public LastSixMonths(String symbol, String country, Date date, int total_cases, int new_cases, int total_deaths, int new_deaths, int total_tests, int new_tests) {
         this.symbol = symbol;
         this.country = country;
         this.date = date;
@@ -43,19 +41,21 @@ public class LastSixMonths {
 
     public String getCountry() { return this.country; }
 
-    public Date getDate() {return this.date; }
+    public String getDate() { 
+        return new SimpleDateFormat("yyyy-MM-dd").format(this.date); 
+    }
 
-    public Long getTotal_cases() {return this.total_cases; }
+    public int getTotal_cases() {return this.total_cases; }
 
-    public Long getNew_cases() {return this.new_cases; }
+    public int getNew_cases() {return this.new_cases; }
 
-    public Long getTotal_deaths() {return this.total_deaths; }
+    public int getTotal_deaths() {return this.total_deaths; }
 
-    public Long getNew_deaths() {return this.new_deaths; }
+    public int getNew_deaths() {return this.new_deaths; }
 
-    public Long getTotal_tests() {return this.total_tests; }
+    public int getTotal_tests() {return this.total_tests; }
 
-    public Long getNew_tests() {return this.new_tests; }
+    public int getNew_tests() {return this.new_tests; }
 
 
     @Override
@@ -74,7 +74,6 @@ public class LastSixMonths {
             ", total_tests='" + getNew_tests() + "'" +
             ", new_tests='" + getNew_tests() + "'" +
             "}";
-    }
-    
+    }    
 }
 

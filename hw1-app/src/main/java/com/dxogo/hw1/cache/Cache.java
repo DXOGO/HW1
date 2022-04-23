@@ -1,11 +1,9 @@
 package com.dxogo.hw1.cache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Cache {
 
     private Map<String, Object> cache;
@@ -18,13 +16,13 @@ public class Cache {
     private int misses = 0;
 
     public Cache() {
-        max_time = 100000;
+        max_time = 100 * 1000;
         cache = new HashMap<>();
         t2t = new HashMap<>();
     }
 
     public Cache(long max_time) {
-        this.max_time = max_time * 2000;
+        this.max_time = max_time * 1000;
         cache = new HashMap<>();
         t2t = new HashMap<>();
     }
@@ -68,11 +66,16 @@ public class Cache {
 
     public int size() {
 
+        ArrayList<String> keys2remove = new ArrayList<>();
+
         for (String key : cache.keySet()) {
             if ( t2t.get(key) <= System.currentTimeMillis() ) {
-                clean(key);
+                keys2remove.add(key);
             }
         }
+        
+        for (String key : keys2remove) clean(key);
+
         return this.cache.size();
     }
 
@@ -97,5 +100,6 @@ public class Cache {
             "}";
     }
 
-    
+    public boolean isEmpty() { return this.size() == 0; }
+
 }

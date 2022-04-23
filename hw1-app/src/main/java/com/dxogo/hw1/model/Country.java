@@ -10,25 +10,25 @@ import lombok.Data;
 public class Country {
 
     @JsonProperty("Country") private String name;
-    @JsonProperty("rank") private Long rank;
+    @JsonProperty("rank") private int rank;
     @JsonProperty("Continent") private String continent;
     @JsonProperty("ThreeLetterSymbol") private String iso;
     @JsonProperty("TwoLetterSymbol") private String twoLetterSymbol;
-    @JsonProperty("TotalCases") private Long total_cases;
-    @JsonProperty("NewCases") private Long new_cases;
-    @JsonProperty("TotalDeaths") private Long total_deaths;
-    @JsonProperty("NewDeaths") private Long new_deaths;
-    @JsonProperty("TotalRecovered") private Long total_recovered;
-    @JsonProperty("NewRecovered") private Long new_recovered;
-    @JsonProperty("ActiveCases") private Long active_cases;
-    @JsonProperty("Serious_Critical") private Long critical;
-    @JsonProperty("TotalTests") private Long total_tests;
+    @JsonProperty("TotalCases") private int total_cases;
+    @JsonProperty("NewCases") private int new_cases;
+    @JsonProperty("TotalDeaths") private int total_deaths;
+    @JsonProperty("NewDeaths") private int new_deaths;
+    @JsonProperty("TotalRecovered") private int total_recovered;
+    @JsonProperty("NewRecovered") private int new_recovered;
+    @JsonProperty("ActiveCases") private int active_cases;
+    @JsonProperty("Serious_Critical") private int critical;
+    @JsonProperty("TotalTests") private int total_tests;
 
 
 
     public Country() {}
 
-    public Country(String name, Long rank, String continent, String iso, String twoLetterSymbol, Long total_cases, Long new_cases, Long total_deaths, Long new_deaths, Long total_recovered, Long new_recovered, Long active_cases, Long critical, Long total_tests) {
+    public Country(String name, int rank, String continent, String iso, String twoLetterSymbol, int total_cases, int new_cases, int total_deaths, int new_deaths, int total_recovered, int new_recovered, int active_cases, int critical, int total_tests) {
         this.name = name;
         this.rank = rank;
         this.continent = continent;
@@ -48,7 +48,7 @@ public class Country {
 
     public String getName() { return this.name; }
     
-    public Long getRank() { return this.rank; }
+    public int getRank() { return this.rank; }
 
     public String getContinent() { return this.continent; }
 
@@ -56,23 +56,23 @@ public class Country {
 
     public String getTwoLetterSymbol() { return this.twoLetterSymbol; }
 
-    public Long getTotal_cases() { return this.total_cases; }
+    public int getTotal_cases() { return this.total_cases; }
 
-    public Long getNew_cases() { return this.new_cases; }
+    public int getNew_cases() { return this.new_cases; }
 
-    public Long getTotal_deaths() { return this.total_deaths; }
+    public int getTotal_deaths() { return this.total_deaths; }
 
-    public Long getNew_deaths() { return this.new_deaths; }
+    public int getNew_deaths() { return this.new_deaths; }
 
-    public Long getTotal_recovered() { return this.total_recovered; }
+    public int getTotal_recovered() { return this.total_recovered; }
 
-    public Long getNew_recovered() { return this.new_recovered; }
+    public int getNew_recovered() { return this.new_recovered; }
     
-    public Long getActive_cases() { return this.active_cases; }
+    public int getActive_cases() { return this.active_cases; }
 
-    public Long getCritical() { return this.critical; }
+    public int getCritical() { return this.critical; }
     
-    public Long getTotal_tests() { return this.total_tests; }
+    public int getTotal_tests() { return this.total_tests; }
 
     @Override
     public String toString() {

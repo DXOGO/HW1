@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import com.dxogo.hw1.exception.ResourceNotFoundException;
 import com.dxogo.hw1.model.Country;
+import com.dxogo.hw1.model.LastSixMonths;
 import com.dxogo.hw1.service.ReportsService;
 
 @RestController
@@ -69,6 +68,47 @@ public class ReportsController {
     @GetMapping("/countries")
     public TreeMap<String, String> getCountries() throws InterruptedException, IOException {
         return service.getMapCountryISO();
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // for testing
+    @GetMapping("/report/{iso}")
+    public Country getJsonCountry(@PathVariable String iso) throws ResourceNotFoundException, IOException, InterruptedException{
+        String country = service.getCountryFromISO(iso);
+        return service.countryDataToday(iso, country);
+    }
+
+    @GetMapping("/report/world")
+    public Country getJsonWorld() throws ResourceNotFoundException, IOException, InterruptedException{
+        return service.getWorldData();
+    }
+
+    @GetMapping("/report/top10")
+    public List<Country> getJsonTop10() throws ResourceNotFoundException, IOException, InterruptedException{
+        return service.getTop10();
+    }
+
+    @GetMapping("/report/iso/{country}")
+    public String getIsoFromCountry(@PathVariable String country) throws ResourceNotFoundException, IOException, InterruptedException{
+        String iso = service.getIsoFromCountry(country);
+        return "{ \"iso\" : \""+ iso +"\"}";
+    }
+
+    @GetMapping("/report/country/{iso}")
+    public String getCountryFromIso(@PathVariable String iso) throws ResourceNotFoundException, IOException, InterruptedException{
+        String country = service.getCountryFromISO(iso);
+        return "{ \"country\" : \""+ country +"\"}";
+    }
+
+    @GetMapping("/report/cache")
+    public String getCacheDetailsReport(){
+       return service.getCacheDetails();
+    }
+
+    @GetMapping("/report/lastsixmonths/{iso}")
+    public List<LastSixMonths> getLastsixMonths(@PathVariable String iso) throws IOException, InterruptedException{
+        return service.getLastSixMonthsData(iso);
     }
 
 }
