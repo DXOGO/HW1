@@ -10,17 +10,17 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-
 import com.dxogo.hw1.cache.Cache;
+import com.dxogo.hw1.connection.HttpClientConfig;
 import com.dxogo.hw1.exception.ResourceNotFoundException;
 import com.dxogo.hw1.model.Country;
 import com.dxogo.hw1.model.LastSixMonths;
 
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -36,7 +36,7 @@ public class ReportsService {
     private Cache cache = new Cache(); // change the time to live here (add as argument in the constructor)
     
     // get world data
-    public Country getWorldData() throws ResourceNotFoundException {
+    public Country getWorldData() throws ResourceNotFoundException, IOException, InterruptedException {
 
         String cacheKey = "world";
 
@@ -51,11 +51,11 @@ public class ReportsService {
         ResponseEntity<Country[]> response = template.getForEntity("/npm-covid-data/world", Country[].class);
         Country world = (response.getBody())[0];
 
-        
         cache.add(cacheKey, world);
         log.info("> [WORLD CACHE SAVED]");
         
-        return world;
+        
+	    return response.getStatusCode() == HttpStatus.OK ? world : null;
     }
 
     public TreeMap<String, String> getMapCountryISO() throws IOException, InterruptedException {
@@ -73,13 +73,13 @@ public class ReportsService {
         TreeMap<String,String> map = new TreeMap<>();
 
 
-        ResponseEntity<JSONObject[]> response = template.getForEntity("npm-covid-data/countries-name-ordered", JSONObject[].class);
-        JSONObject[] data = response.getBody();
+        ResponseEntity<Country[]> response = template.getForEntity("npm-covid-data/countries-name-ordered", Country[].class);
+        Country[] data = response.getBody();
 
-        for (JSONObject c : data){
+        for (Country c : data){
 
-            String country = c.get("Country").toString();
-            String iso = c.get("ThreeLetterSymbol").toString();
+            String country = c.getName();
+            String iso = c.getIso();
 
             map.put(iso, country);
         }
@@ -87,7 +87,7 @@ public class ReportsService {
         cache.add(cacheKey, map);
         log.info("> [MAPPING CACHE SAVED]");
 
-        return map;
+        return response.getStatusCode() == HttpStatus.OK ? map : null;
     }
 
 
@@ -114,28 +114,26 @@ public class ReportsService {
     }
 
     // today data of 1 country
-    public Country countryDataToday(String iso_code, String country) throws IOException, InterruptedException {
+    public Country getCountryDataToday(String iso_code, String country) throws IOException, InterruptedException {
         
         String cacheKey = iso_code +"_"+ country;
 
         Object cache_today = cache.get( cacheKey );
         if (cache_today != null) {
-            log.info("> [CACHE] Getting country data", country );
+            log.info("> [CACHE] Getting country data" );
             return (Country) cache_today;
         }
 
-        log.info("> [REQUEST] Getting country data", country);
+        log.info("> [REQUEST] Getting country data");
 
         ResponseEntity<Country[]> response = template.getForEntity("npm-covid-data/country-report-iso-based/" + country + "/" + iso_code, Country[].class);
-        Country[] c = response.getBody();
+        Country c = (response.getBody())[0];
 
         cache.add(cacheKey, c);
         log.info("> [COUNTRY CACHE SAVED]");
         
-        return c[0];
+        return response.getStatusCode() == HttpStatus.OK ? c : null;
     }
-
-    // ! arrays de countries
 
     // data from last 6 months from 1 country
     public List<LastSixMonths> getLastSixMonthsData(String iso_code) throws IOException, InterruptedException {        
@@ -158,10 +156,7 @@ public class ReportsService {
         cache.add(cacheKey, last6MonthsData);
         log.info("> [LAST 6 MONTHS CACHE SAVED]");
         
-        for (LastSixMonths data : last6MonthsData){
-            l_6months.add(data);
-        }
-
+        if (response.getStatusCode() == HttpStatus.OK){ for (LastSixMonths data : last6MonthsData){ l_6months.add(data); } }
         return l_6months;
     }
 
@@ -186,14 +181,16 @@ public class ReportsService {
         ResponseEntity<Country[]> response = template.getForEntity("npm-covid-data/", Country[].class);
         Country[] top10 = response.getBody();
 
-        for (Country c : top10){
-            String country = c.getName();
-            int total_cases = c.getTotal_cases();
+        if (response.getStatusCode() == HttpStatus.OK){
+            for (Country c : top10){
+                String country = c.getName();
+                int total_cases = c.getTotal_cases();
 
-            if (!country.equals("World") && !country.equals("Total:")){
+                if (!country.equals("World") && !country.equals("Total:")){
 
-                map.put(country, total_cases);
-                map10.add(c);
+                    map.put(country, total_cases);
+                    map10.add(c);
+                }
             }
         }
 
@@ -223,7 +220,21 @@ public class ReportsService {
     return finalList;
         
     }
-    
 
-    public String getCacheDetails() { return cache.toString(); }
+    public Cache getCacheDetails() { return cache; }
+    public String getCacheDetailsString() { return cache.toString(); }
+
+    public List<Country> getAllCountries() {
+
+        List<Country> all_list = new ArrayList<>();
+
+        ResponseEntity<Country[]> response = template.getForEntity("npm-covid-data/countries/", Country[].class);
+        Country[] all = response.getBody();
+
+        for (Country c: all) {
+            all_list.add(c);
+        }
+
+        return all_list;
+    }
 }

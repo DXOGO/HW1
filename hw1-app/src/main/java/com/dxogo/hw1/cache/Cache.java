@@ -93,7 +93,7 @@ public class Cache {
     @Override
     public String toString() {
         return "{" +
-            "max_time='" + getMax_time() + "'" +
+            "time_to_live='" + getMax_time() + "'" +
             ", requests='" + getRequests() + "'" +
             ", hits='" + getHits() + "'" +
             ", misses='" + getMisses() + "'" +

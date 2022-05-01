@@ -57,7 +57,7 @@ public class ReportsControllerTest {
 
         Country c = new Country("Portugal", 30, "Europe", "prt", "pt", 3719485, 401, 21993, 32, 3697492, 1272, 5123, 61, 40748372);
 
-        when( service.countryDataToday( Mockito.anyString(), Mockito.anyString() )).thenReturn( c );
+        when( service.getCountryDataToday( Mockito.anyString(), Mockito.anyString() )).thenReturn( c );
         when( service.getCountryFromISO( Mockito.anyString() ) ).thenReturn( "Portugal" );
 
         mvc.perform(
@@ -69,7 +69,7 @@ public class ReportsControllerTest {
             .andExpect(jsonPath("$.Continent", is(c.getContinent()))
             );
             
-        verify(service, times(1)).countryDataToday("prt", "Portugal" );
+        verify(service, times(1)).getCountryDataToday("prt", "Portugal" );
 
     }
 
@@ -170,7 +170,7 @@ public class ReportsControllerTest {
 
         String cache = "{ \"time_to_live\": 3000, \"requests\": 7, \"hits\": 5, \"misses\": 2 }";
     
-        when( service.getCacheDetails() ).thenReturn( cache );
+        when( service.getCacheDetailsString() ).thenReturn( cache );
 
         mvc.perform(
             get("/report/cache").contentType(MediaType.APPLICATION_JSON))
@@ -182,7 +182,7 @@ public class ReportsControllerTest {
             .andExpect(jsonPath("$.misses", is(2))
         );
             
-        verify(service, times(1)).getCacheDetails();
+        verify(service, times(1)).getCacheDetailsString();
 
     }
 

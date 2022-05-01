@@ -104,7 +104,7 @@ public class CacheTest {
         assertEquals(cache.get("cache1"), "add_t1");
 
         try {
-            Thread.sleep(4000); // sleep 3 seconds
+            Thread.sleep(4000); // sleep 4 seconds
 
         } catch(InterruptedException e) {
             System.out.println("Got interrupted!");

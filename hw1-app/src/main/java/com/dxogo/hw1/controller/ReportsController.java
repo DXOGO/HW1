@@ -21,34 +21,37 @@ public class ReportsController {
 
     @Autowired ReportsService service;
 
+    public ReportsController(ReportsService service) { this.service = service; }
+
     // country report
     @GetMapping("/{iso}")
     public ModelAndView getCountryReport(Model model, @PathVariable String iso) throws ResourceNotFoundException, IOException, InterruptedException {
-        
-        ModelAndView modelEdit = new ModelAndView();
+                
 
+        ModelAndView mv = new ModelAndView();
+        
         String country = service.getCountryFromISO(iso);
         
-        model.addAttribute("daily", service.countryDataToday(iso, country));
+        model.addAttribute("daily", service.getCountryDataToday(iso, country));
         model.addAttribute("last6months", service.getLastSixMonthsData(iso));
-
-        modelEdit.setViewName("report");
         
-        return modelEdit;
+        mv.setViewName("report");
+        
+        return mv;
     }
 
     // world report
     @GetMapping("/world")
     public ModelAndView getWorldReport(Model model) throws ResourceNotFoundException, IOException, InterruptedException {
         
-        ModelAndView modelEdit = new ModelAndView();
+        ModelAndView mv = new ModelAndView();
         
         model.addAttribute("world", service.getWorldData());
         model.addAttribute("top10", service.getTop10());
 
-        modelEdit.setViewName("world");
+        mv.setViewName("world");
         
-        return modelEdit;
+        return mv;
     }
 
     // get cache
@@ -76,7 +79,7 @@ public class ReportsController {
     @GetMapping("/report/{iso}")
     public Country getJsonCountry(@PathVariable String iso) throws ResourceNotFoundException, IOException, InterruptedException{
         String country = service.getCountryFromISO(iso);
-        return service.countryDataToday(iso, country);
+        return service.getCountryDataToday(iso, country);
     }
 
     @GetMapping("/report/world")
@@ -101,14 +104,19 @@ public class ReportsController {
         return "{ \"country\" : \""+ country +"\"}";
     }
 
-    @GetMapping("/report/cache")
-    public String getCacheDetailsReport(){
-       return service.getCacheDetails();
-    }
-
     @GetMapping("/report/lastsixmonths/{iso}")
     public List<LastSixMonths> getLastsixMonths(@PathVariable String iso) throws IOException, InterruptedException{
         return service.getLastSixMonthsData(iso);
+    }
+
+    @GetMapping("/report/allcountries")
+    public List<Country> getAllCountries() throws IOException, InterruptedException{
+        return service.getAllCountries();
+    }
+
+    @GetMapping("/report/cache")
+    public String getCacheDetailsReport(){
+       return service.getCacheDetailsString();
     }
 
 }
