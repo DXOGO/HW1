@@ -27,7 +27,6 @@ mvn clean package -DskipTests
 Then,
 
 ```
-[DOCKER] 		./run.sh (localhost:8080)
-[OPTIONAL] 		./mvnw spring-boot:run (in the hw1-app folder)
+./mvnw spring-boot:run
 ```
 
