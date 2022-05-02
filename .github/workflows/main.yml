@@ -12,6 +12,9 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '11'
-          distribution: 'adopt'
+          distribution: 'temurin'
+          cache: maven
+      - name: Run docker
+        run: docker-compose -f HW1/docker-compose.yml up -d
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots package
+        run: mvn -B package --file HW1/api/HW1/pom.xml
