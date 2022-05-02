@@ -30,7 +30,7 @@ public class FrontendSteps {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.get(url);
-        driver.manage().window().setSize(new Dimension(550, 692));
+        // driver.manage().window().setSize(new Dimension(550, 692));
     }
 
     @And("I click in {string} select button")

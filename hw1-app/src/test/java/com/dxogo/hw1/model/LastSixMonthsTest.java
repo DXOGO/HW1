@@ -19,7 +19,7 @@ public class LastSixMonthsTest {
 
         assertEquals("prt", c.getSymbol());
         assertEquals("Portugal", c.getCountry());
-        // assertEquals(d, c.getDate());
+        assertEquals(d, c.getDateDate());
         assertEquals(1085451, c.getTotal_cases());
         assertEquals(313, c.getNew_cases());
         assertEquals(18138, c.getTotal_deaths());

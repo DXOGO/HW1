@@ -43,6 +43,8 @@ public class LastSixMonths {
 
     public String getDate() { return new SimpleDateFormat("yyyy-MM-dd").format(this.date); }
 
+    public Date getDateDate() { return this.date; }
+
     public int getTotal_cases() {return this.total_cases; }
 
     public int getNew_cases() {return this.new_cases; }
