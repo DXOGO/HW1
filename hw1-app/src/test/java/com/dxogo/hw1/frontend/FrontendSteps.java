@@ -30,7 +30,7 @@ public class FrontendSteps {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.get(url);
-        // driver.manage().window().setSize(new Dimension(550, 692));
+        driver.manage().window().setSize(new Dimension(550, 692));
     }
 
     @And("I click in {string} select button")
@@ -41,7 +41,7 @@ public class FrontendSteps {
 
     @Then("I should see {string}")
     public void iRedirectTo(String element) throws InterruptedException {
-        Thread.sleep(5000); // wait for data
+        Thread.sleep(3000); // wait for data
         assertThat(driver.findElement(By.cssSelector("h1")).getText(), containsString(element));
     }
 
