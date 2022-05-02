@@ -1,4 +1,4 @@
-package com.dxogo.hw1.selenium;
+package com.dxogo.hw1.cucumber;
 
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;

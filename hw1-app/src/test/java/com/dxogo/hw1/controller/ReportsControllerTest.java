@@ -4,16 +4,19 @@ import com.dxogo.hw1.model.Country;
 import com.dxogo.hw1.model.LastSixMonths;
 import com.dxogo.hw1.service.ReportsService;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -34,19 +37,24 @@ public class ReportsControllerTest {
     // note that @AutoWire would result in NoSuchBeanDefinitionException
     @MockBean ReportsService service;
 
+    @Mock private RestTemplate template;
+
+    @BeforeEach
+    void setUp() { service = new ReportsService(template); } 
+
     @Test
     void getWorldData() throws Exception {
 
-        Country c = new Country("World", 0, "All", null, null, 508387668, 640592, 6238531, 2220, 460806264, 808241, 41342873, 41733, 0);
+        Country w = new Country("World", 0, "All", null, null, 508387668, 640592, 6238531, 2220, 460806264, 808241, 41342873, 41733, 0);
 
-        when(service.getWorldData()).thenReturn(c);
+        when(service.getWorldData()).thenReturn(w);
 
         mvc.perform(
             get("/report/world").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.*", hasSize(14)))
-            .andExpect(jsonPath("$.Country", is(c.getName())))
-            .andExpect(jsonPath("$.Continent", is(c.getContinent()))
+            .andExpect(jsonPath("$.Country", is(w.getName())))
+            .andExpect(jsonPath("$.Continent", is(w.getContinent()))
             );
             
         verify(service, times(1)).getWorldData();

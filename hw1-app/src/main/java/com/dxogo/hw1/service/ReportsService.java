@@ -35,6 +35,8 @@ public class ReportsService {
 
     private Cache cache = new Cache(); // change the time to live here (add as argument in the constructor)
     
+    public ReportsService(RestTemplate template) { this.template = template; }
+
     // get world data
     public Country getWorldData() throws ResourceNotFoundException, IOException, InterruptedException {
 
@@ -57,6 +59,7 @@ public class ReportsService {
         
 	    return response.getStatusCode() == HttpStatus.OK ? world : null;
     }
+
 
     public TreeMap<String, String> getMapCountryISO() throws IOException, InterruptedException {
 
@@ -150,7 +153,7 @@ public class ReportsService {
 
         log.info("> [REQUEST] Getting data from the last 6 months", iso_code);
 
-        ResponseEntity<LastSixMonths[]> response = template.getForEntity("covid-ovid-data/sixmonth/" + iso_code, LastSixMonths[].class);
+        ResponseEntity<LastSixMonths[]> response = template.getForEntity("/covid-ovid-data/sixmonth/" + iso_code, LastSixMonths[].class);
         LastSixMonths[] last6MonthsData =response.getBody();
         
         cache.add(cacheKey, last6MonthsData);
@@ -158,6 +161,14 @@ public class ReportsService {
         
         if (response.getStatusCode() == HttpStatus.OK){ for (LastSixMonths data : last6MonthsData){ l_6months.add(data); } }
         return l_6months;
+    }
+
+    public LastSixMonths[] getAllLastSixMonths(String iso_code) throws IOException, InterruptedException {        
+        
+        ResponseEntity<LastSixMonths[]> response = template.getForEntity("/covid-ovid-data/sixmonth/" + iso_code, LastSixMonths[].class);
+        LastSixMonths[] last6MonthsData =response.getBody();
+    
+        return last6MonthsData;
     }
 
     // top10 with most total cases in the
@@ -224,17 +235,19 @@ public class ReportsService {
     public Cache getCacheDetails() { return cache; }
     public String getCacheDetailsString() { return cache.toString(); }
 
-    public List<Country> getAllCountries() {
+    public Country[] getAllCountries() {
 
-        List<Country> all_list = new ArrayList<>();
-
-        ResponseEntity<Country[]> response = template.getForEntity("npm-covid-data/countries/", Country[].class);
+        ResponseEntity<Country[]> response = template.getForEntity("/npm-covid-data/countries-name-ordered", Country[].class);
         Country[] all = response.getBody();
 
-        for (Country c: all) {
-            all_list.add(c);
-        }
+        return all;
+    }
 
-        return all_list;
+    public Country getAllWorldData() {
+
+        ResponseEntity<Country> response = template.getForEntity("/npm-covid-data/world", Country.class);
+        Country all = response.getBody();
+
+        return all;
     }
 }

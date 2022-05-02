@@ -1,17 +1,11 @@
 package com.dxogo.hw1.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
 import com.dxogo.hw1.cache.Cache;
-import com.dxogo.hw1.connection.HttpClientConfig;
 import com.dxogo.hw1.exception.ResourceNotFoundException;
 import com.dxogo.hw1.model.Country;
+import com.dxogo.hw1.model.LastSixMonths;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,91 +15,87 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
+
+import java.text.SimpleDateFormat;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.json.JSONException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
-@SuppressWarnings("rawtypes")
 public class ReportsServiceTest {
-    
-    @Mock private TestRestTemplate template;
+
+    @Mock private RestTemplate template;
     
     @Mock private Cache cache;
     
     @InjectMocks private ReportsService service;
-
     
     @BeforeEach
-    void setUp() throws InterruptedException, ResourceNotFoundException, IOException {
-        this.service = new ReportsService();
-        this.template = new TestRestTemplate();
+    void setUp() { service = new ReportsService(template); } 
 
-    //     Country c1 = new Country("Portugal", 30, "Europe", "prt", "pt", 3719485, 401, 21993, 32, 3697492, 1272, 5123, 61, 40748372);
-    //     Country c2 = new Country("Spain", 11, "Europe", "esp", "es", 11786036, 16381, 103908, 63, 11261340, 13474, 420788, 339, 471036328);
-    //     Country w = new Country("World", 0, "All", null, null, 508387668, 640592, 6238531, 2220, 460806264, 808241, 41342873, 41733, 0);
-    
-    //     List<Country> allCountries = Arrays.asList(c1, c2, w);
-
-        // Mockito.when(this.service.getCountryDataToday(c1.getName(), c1.getIso())).thenReturn(c1);
-        // Mockito.when(this.service.getCountryDataToday(c2.getName(), c2.getIso())).thenReturn(c2);
-        // Mockito.when(this.service.getCountryDataToday("not existing","not existing")).thenReturn(null);
-        // Mockito.when(this.service.getAllCountries()).thenReturn(allCountries);
-    } 
+    @AfterEach
+    void cleanUp() { cache.clear(); }
 
     @Test
-    void whenValidUrl_ThenReturnOk(){
-        ResponseEntity<String> response = template.
-        getForEntity("http://localhost:8080/world", String.class);
+    void getWorldDataTest() throws IOException, InterruptedException, ResourceNotFoundException {
+
+        Country[] world = {new Country("World", 0, "All", null, null, 508387668, 640592, 6238531, 2220, 460806264, 808241, 41342873, 41733, 0)};
+
+        ResponseEntity<Country[]> response = ResponseEntity.ok().body(world);
         
-        Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        Mockito.when(template.getForEntity("/npm-covid-data/world", Country[].class)).thenReturn(response);
+
+        Country result = service.getWorldData();
+
+        assertEquals(result, world[0]);
+        Mockito.verify(template, Mockito.times(1)).getForEntity("/npm-covid-data/world", Country[].class);
+
     }
 
     @Test
-    void whenValidName_thenCountryShouldBeFound() throws IOException, ResourceNotFoundException, InterruptedException {
-        // String iso = "prt";
-        // String found = service.getCountryFromISO(iso);
+    void getAllCountriesTest() throws ResourceNotFoundException, IOException, InterruptedException {
+        Country c1 = new Country("Portugal", 29, "Europe", "prt", "pt", 3719485, 401, 21993, 32, 3697492, 1272, 5123, 61, 40748372);
+        Country c2 = new Country("Spain", 11, "Europe", "esp", "es", 11786036, 16381, 103908, 63, 11261340, 13474, 420788, 339, 471036328);
 
-        // Assertions.assertEquals(found, iso);
-    }
-
-    @Test
-    void getWorldDataTest() throws IOException, InterruptedException {
-    }
-
-    @Test
-    void getIsoFromCountryTest() throws IOException, InterruptedException, JSONException, ParseException {
-    }
-
-    @Test
-    void givenMockingIsDoneByMockito_whenGetIsCalled_shouldReturnMockedObject() throws ResourceNotFoundException, IOException, InterruptedException {
-        // Country c1 = new Country("Portugal", 29, "Europe", "prt", "pt", 3719485, 401, 21993, 32, 3697492, 1272, 5123, 61, 40748372);
+        Country[] countries = {c1, c2};
+        ResponseEntity<Country[]> response = ResponseEntity.ok().body(countries);
         
-        // Mockito.when(template.getForEntity("http://localhost:8080/report/prt", Country.class))
-        //     .thenReturn(new ResponseEntity<Country>(c1, HttpStatus.OK));
+        Mockito.when(template.getForEntity("/npm-covid-data/countries-name-ordered", Country[].class)).thenReturn(response);
 
-        // String countryname = service.getCountryFromISO("prt");
-        // Assertions.assertEquals(countryname, c1);
+        Country[] result = service.getAllCountries();
+
+        assertEquals(result, countries);
+        Mockito.verify(template, Mockito.times(1)).getForEntity("/npm-covid-data/countries-name-ordered", Country[].class);
     }
 
     @Test
-    void getCacheDetailsTest() throws IOException, InterruptedException, JSONException, ParseException {
+    void getCountryLastSixMonthsTest() throws ParseException, IOException, InterruptedException{
 
-        String cache_string = "{ \"time_to_live\": 3000, \"requests\": 7, \"hits\": 5, \"misses\": 2 }";
-    
-        Mockito.when( cache.toString() ).thenReturn( cache_string );
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
 
-        String info = service.getCacheDetailsString();
+        Date date1 = formatter.parse("2021-10-26");
+        LastSixMonths c1 = new LastSixMonths("PRT", "Portugal", date1, 1088133, 888, 18149, 3, 19784847, 35619);
+ 
+        Date date2 = formatter.parse("2021-10-27");
+        LastSixMonths c2 = new LastSixMonths("PRT", "Portugal", date2, 2611886, 45335, 19856, 29, 19784847, 35619);
 
-        assertEquals(cache_string, info);
+        LastSixMonths[] l6m = {c1, c2};
+
+        ResponseEntity<LastSixMonths[]> response = ResponseEntity.ok().body(l6m);
+        
+        Mockito.when(template.getForEntity("/covid-ovid-data/sixmonth/PRT", LastSixMonths[].class)).thenReturn(response);
+
+        LastSixMonths[] result = service.getAllLastSixMonths("PRT");
+
+        assertEquals(result, l6m);
+        Mockito.verify(template, Mockito.times(1)).getForEntity("/covid-ovid-data/sixmonth/PRT", LastSixMonths[].class);
     }
 }

@@ -109,11 +109,6 @@ public class ReportsController {
         return service.getLastSixMonthsData(iso);
     }
 
-    @GetMapping("/report/allcountries")
-    public List<Country> getAllCountries() throws IOException, InterruptedException{
-        return service.getAllCountries();
-    }
-
     @GetMapping("/report/cache")
     public String getCacheDetailsReport(){
        return service.getCacheDetailsString();
