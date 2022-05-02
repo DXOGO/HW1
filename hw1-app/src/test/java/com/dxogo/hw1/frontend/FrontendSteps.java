@@ -1,4 +1,4 @@
-package com.dxogo.hw1.cucumber;
+package com.dxogo.hw1.frontend;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
@@ -8,26 +8,27 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
 import io.github.bonigarcia.seljup.SeleniumJupiter;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
-import io.cucumber.java.After;
+
+import io.cucumber.java.en.When;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.After;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.junit.jupiter.api.Test;;
-
 @ExtendWith(SeleniumJupiter.class)
 public class FrontendSteps {
 
-    private WebDriver driver = new ChromeDriver();
-    
+    private WebDriver driver;
+        
     @When("I want to access {string}")
     public void iNavigateTo(String url) {
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
         driver.get(url);
         driver.manage().window().setSize(new Dimension(550, 692));
     }

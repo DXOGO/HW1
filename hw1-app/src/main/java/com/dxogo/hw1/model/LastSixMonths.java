@@ -41,9 +41,7 @@ public class LastSixMonths {
 
     public String getCountry() { return this.country; }
 
-    public String getDate() { 
-        return new SimpleDateFormat("yyyy-MM-dd").format(this.date); 
-    }
+    public String getDate() { return new SimpleDateFormat("yyyy-MM-dd").format(this.date); }
 
     public int getTotal_cases() {return this.total_cases; }
 
@@ -61,12 +59,10 @@ public class LastSixMonths {
     @Override
     public String toString() {
 
-        String date = new SimpleDateFormat("yyyy-MM-dd").format( this.getDate() );
-
         return "{" +
             " symbol='" + getSymbol() + "'" +
             ", country='" + getCountry() + "'" +
-            ", date='" + date + "'" +
+            ", date='" + getDate() + "'" +
             ", total_cases='" + getTotal_cases() + "'" +
             ", new_cases='" + getNew_cases() + "'" +
             ", total_deaths='" + getTotal_deaths() + "'" +

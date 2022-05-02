@@ -11,7 +11,6 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import com.dxogo.hw1.cache.Cache;
-import com.dxogo.hw1.connection.HttpClientConfig;
 import com.dxogo.hw1.exception.ResourceNotFoundException;
 import com.dxogo.hw1.model.Country;
 import com.dxogo.hw1.model.LastSixMonths;

@@ -1,4 +1,4 @@
-package com.dxogo.hw1.cucumber;
+package com.dxogo.hw1.frontend;
 
 import org.junit.platform.suite.api.ConfigurationParameter;
 import org.junit.platform.suite.api.IncludeEngines;

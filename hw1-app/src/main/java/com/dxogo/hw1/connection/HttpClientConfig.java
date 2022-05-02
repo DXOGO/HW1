@@ -1,12 +1,7 @@
 package com.dxogo.hw1.connection;
 
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.IOException;
-import java.net.URI;
 
 import org.apache.http.Header;
 import org.apache.http.HttpHeaders;

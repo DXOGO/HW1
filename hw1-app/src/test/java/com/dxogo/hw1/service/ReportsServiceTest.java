@@ -20,14 +20,9 @@ import java.text.SimpleDateFormat;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import org.json.JSONException;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 
 @ExtendWith(MockitoExtension.class)
 public class ReportsServiceTest {
