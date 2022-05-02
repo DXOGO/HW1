@@ -41,7 +41,7 @@ public class FrontendSteps {
 
     @Then("I should see {string}")
     public void iRedirectTo(String element) throws InterruptedException {
-        Thread.sleep(2000); // wait for data
+        Thread.sleep(5000); // wait for data
         assertThat(driver.findElement(By.cssSelector("h1")).getText(), containsString(element));
     }
 
