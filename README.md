@@ -1,6 +1,4 @@
-# HW1 - 98595
-
-#### Web application with details on COVID incidence data for a certain country/territory. 
+## Web application with details on COVID incidence data for a certain country/territory. 
 
 Includes:
 
