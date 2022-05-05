@@ -1,6 +1,4 @@
-# HW1 - 98595
-
-#### Web application with details on COVID incidence data for a certain country/territory. 
+# COVID incidence data project for the Testing and Quality Software class 2021/2022 
 
 Includes:
 
