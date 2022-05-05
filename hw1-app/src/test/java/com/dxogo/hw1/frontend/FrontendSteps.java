@@ -20,11 +20,12 @@ import io.cucumber.java.After;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+// functional testing
 @ExtendWith(SeleniumJupiter.class)
 public class FrontendSteps {
 
     private WebDriver driver;
-        
+    
     @When("I want to access {string}")
     public void iNavigateTo(String url) {
         WebDriverManager.chromedriver().setup();
@@ -34,14 +35,15 @@ public class FrontendSteps {
     }
 
     @And("I click in {string} select button")
-    public void iSelectCountry(String country) {
+    public void iSelectCountry(String country) throws InterruptedException {
+        Thread.sleep(1000);
         Select dropdown = new Select(driver.findElement(By.xpath("/html/body/div/div[1]/div[1]/select")));
         dropdown.selectByValue(country);
     }
 
     @Then("I should see {string}")
     public void iRedirectTo(String element) throws InterruptedException {
-        Thread.sleep(3000); // wait for data
+        Thread.sleep(1000); 
         assertThat(driver.findElement(By.cssSelector("h1")).getText(), containsString(element));
     }
 
